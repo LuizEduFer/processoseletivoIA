@@ -1,13 +1,3 @@
-# Artefatos temporários de treinamento (Ultralytics YOLO - Projeto 3)
-runs/
-*.cache
-yolo11n.pt
-yolo11n.onnx
-
-# Python
+.venv/
 __pycache__/
 *.pyc
-
-# Ambientes / editores
-.vscode/
-.DS_Store

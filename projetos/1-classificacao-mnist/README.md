@@ -85,28 +85,48 @@ projetos/1-classificacao-mnist/
 
 ## 📝 Relatório do Candidato
 
-👤 **Nome Completo:**
+👤 **Nome Completo:** Luiz Eduardo Fernandes Cruz
 
 ### 1️⃣ Resumo da Arquitetura do Modelo
 
-Descreva, em palavras, a arquitetura da CNN implementada em `train_model.py` (número de blocos convolucionais, uso de batch normalization/dropout, estratégia de validação/early stopping).
+Foi implementada uma rede neural convolucional para classificar os dígitos manuscritos do dataset MNIST. O modelo possui três blocos convolucionais, cada um sendo formado por uma camada Conv2D, seguida de BatchNormalization e MaxPooling2D. Após os blocos convolucionais, foi utilizada uma camada Flatten, seguida por uma camada totalmente conectada (Dense) com 128 neurônios e ativação ReLU. Antes da camada de saída, foi aplicado Dropout com taxa de 0,5 para ajudar na regularização do modelo. A camada de saída possui 10 neurônios com ativação softmax, correspondendo às classes dos dígitos de 0 a 9. Os dados de treinamento foram normalizados para o intervalo [0, 1] e foi utilizado um validation_split de 10% para separar os dados de validação. O treinamento foi configurado para no máximo 15 épocas e utilizou EarlyStopping monitorando a perda de validação (val_loss), com a restauração dos melhores pesos encontrados durante o treinamento.
 
 ### 2️⃣ Bibliotecas Utilizadas
 
-Liste as principais bibliotecas utilizadas, preferencialmente com suas versões.
+Python 3.11
+TensorFlow 2.21.0
+Keras 3.15.0, integrado ao TensorFlow
+NumPy 2.4.6
 
 ### 3️⃣ Técnica de Otimização do Modelo
 
-Explique qual técnica foi utilizada para otimizar o modelo em `optimize_model.py`.
+Foi utilizada a técnica de Dynamic Range Quantization durante a conversão do modelo Keras para o TensorFlow Lite. No arquivo optimize_model.py, o modelo treinado em model.h5 é carregado utilizando TensorFlow e convertido por meio de tf.lite.TFLiteConverter. A otimização é habilitada com tf.lite.Optimize.DEFAULT, permitindo que o modelo seja convertido para um formato melhor para execução em dispositivos de Edge AI, reduzindo o tamanho e mantendo uma boa capacidade de inferência. O modelo otimizado foi salvo como model.tflite.
 
 ### 4️⃣ Resultados Obtidos
 
-Informe a acurácia de validação obtida e o tamanho dos arquivos `model.h5` e `model.tflite`.
+A melhor acurácia de validação obtida durante o treinamento foi de 99,38%. Os tamanhos dos modelos gerados foram:
+
+model.h5: 2.979.768 bytes (aproximadamente 2,84 MiB)
+model.tflite: 256.424 bytes (aproximadamente 250,41 KiB)
+
+A conversão para TensorFlow Lite reduziu bastante o tamanho do modelo, tornando ele mais adequado para aplicações de Edge AI. Na etapa de inferência, foram testadas cinco amostras do conjunto de teste utilizando especificamente o modelo otimizado model.tflite por meio de tf.lite.Interpreter. Todas as cinco amostras foram classificadas corretamente.
 
 ### 5️⃣ Comentários Adicionais (Opcional)
 
-Dificuldades encontradas, decisões técnicas importantes, limitações do modelo, aprendizados durante o desafio.
+Uma decisão importante foi utilizar uma arquitetura CNN simples, conforme as restrições do projeto, evitando arquiteturas muito profundas. O uso de EarlyStopping permitiu interromper o treinamento quando a perda de validação parou de apresentar melhora, além de restaurar os melhores pesos encontrados.
+
+A etapa de otimização apresentou uma redução significativa no tamanho do modelo, mostrando a importância da conversão dos formatos para dispositivos com menos recursos computacionais.
 
 ### 6️⃣ Exemplo de Inferência
 
-Cole a saída do terminal ao rodar `run_inference.py` (predito vs. real para as 5+ amostras), e comente brevemente se houve algum caso interessante (acerto ou erro) entre as amostras testadas.
+A execução do arquivo run_inference.py utilizando o modelo otimizado model.tflite apresentou os seguintes resultados:
+
+Rodando inferencia em 5 amostras usando model.tflite:
+
+Amostra 1: predito=7 | real=7
+Amostra 2: predito=2 | real=2
+Amostra 3: predito=1 | real=1
+Amostra 4: predito=0 | real=0
+Amostra 5: predito=4 | real=4
+
+Nas cinco amostras selecionadas, o modelo apresentou acerto em todas as previsões, com resultado de 5 acertos em 5 amostras. Nesse conjunto específico de inferência, não foram observados casos de erro.

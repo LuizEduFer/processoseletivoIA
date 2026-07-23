@@ -93,23 +93,23 @@ Foi implementada uma rede neural convolucional para classificar os dígitos manu
 
 ### 2️⃣ Bibliotecas Utilizadas
 
-Python 3.11
+Python 3.10
 TensorFlow 2.21.0
-Keras 3.15.0, integrado ao TensorFlow
-NumPy 2.4.6
+Keras 3.12.3, integrado ao TensorFlow
+NumPy 2.2.6
 
 ### 3️⃣ Técnica de Otimização do Modelo
 
-Foi utilizada a técnica de Dynamic Range Quantization durante a conversão do modelo Keras para o TensorFlow Lite. No arquivo optimize_model.py, o modelo treinado em model.h5 é carregado utilizando TensorFlow e convertido por meio de tf.lite.TFLiteConverter. A otimização é habilitada com tf.lite.Optimize.DEFAULT, permitindo que o modelo seja convertido para um formato melhor para execução em dispositivos de Edge AI, reduzindo o tamanho e mantendo uma boa capacidade de inferência. O modelo otimizado foi salvo como model.tflite.
+Foi utilizada a técnica de Dynamic Range Quantization durante a conversão do modelo Keras para o TensorFlow Lite. No arquivo optimize_model.py, o modelo treinado em model.h5 é carregado utilizando TensorFlow e convertido por meio de tf.lite.TFLiteConverter. A otimização é habilitada com tf.lite.Optimize.DEFAULT, permitindo que o modelo seja convertido para um formato mais adequado para execução em dispositivos de Edge AI, reduzindo o tamanho e mantendo uma boa capacidade de inferência.
 
 ### 4️⃣ Resultados Obtidos
 
-A melhor acurácia de validação obtida durante o treinamento foi de 99,38%. Os tamanhos dos modelos gerados foram:
+A melhor acurácia de validação obtida durante o treinamento foi de 99,00%. Os tamanhos dos modelos gerados foram:
 
-model.h5: 2.979.768 bytes (aproximadamente 2,84 MiB)
-model.tflite: 256.424 bytes (aproximadamente 250,41 KiB)
+model.h5: aproximadamente 2,84 MiB
+model.tflite: aproximadamente 250,41 KiB
 
-A conversão para TensorFlow Lite reduziu bastante o tamanho do modelo, tornando ele mais adequado para aplicações de Edge AI. Na etapa de inferência, foram testadas cinco amostras do conjunto de teste utilizando especificamente o modelo otimizado model.tflite por meio de tf.lite.Interpreter. Todas as cinco amostras foram classificadas corretamente.
+A conversão para TensorFlow Lite reduziu bastante o tamanho do modelo, tornando ele mais adequado para aplicações de Edge AI. Na validação automática, o modelo model.h5 apresentou 100,00% de acurácia nas 300 amostras de teste utilizadas pelo validador, enquanto o modelo model.tflite também apresentou 100,00% de acurácia nas mesmas 300 amostras. Na etapa de inferência de exemplo, foram testadas cinco amostras do conjunto de teste utilizando especificamente o modelo otimizado model.tflite por meio de tf.lite.Interpreter. Todas as cinco amostras foram classificadas corretamente.
 
 ### 5️⃣ Comentários Adicionais (Opcional)
 
